@@ -1,26 +1,123 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-    <title>Template Infographic</title>
+    <title>Template</title>
     <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    
     <!-- load required css and javascript libraries used by infographiq functionality -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
       integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"></script>
+
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" 
       integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" 
       crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" 
-      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" 
-      crossorigin="anonymous">
+
+  <!-- run infographiq function to link the svg with the svg_list -->
+  <script src='https://marinebon.org/infographiqJS/libs/infographiq_latest/infographiq.js'></script>  
+  <link rel="stylesheet" href="https://marinebon.org/infographiqJS/libs/infographiq_latest/infographiq.css"> 
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" 
       integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" 
       crossorigin="anonymous" />
+
+    <style>
+      .main-container {
+        max-width: 940px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .intro-container {
+        display: flex;
+      }
+
+      .intro-left {
+        margin-top: 10px;
+        margin-bottom: 10px; 
+        margin-right: 10px; 
+        padding-left: 15px;
+        padding-right: 15px; 
+        flex: 1;
+      }
+
+      .intro-right {
+        margin: 10px; 
+        font-style: italic; 
+        flex: 20;
+      }
+
+      h1.title {
+        font-size: 38px;
+        padding-left: 15px;
+        padding-right: 15px; 
+      }
+    </style>
+
+    <script>
+          //Enter scene here
+    const scene = "Kelp Forest";
+    document.title = scene;
+
+
+
+    const DataSourceURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxTAZrLX0uK7N6fFUtXnK9ZEtbUpiF6OBjwFouChE7kJFp7_L0cXwdIwQj3C4j8GYlNQHs0jptr14I/pub?gid=0&single=true&output=csv";
+
+    const DataSourceURL1 = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?tq=where%20A%20%3D%20%22Kelp%20Forest%22";
+
+    const query = new google.visualization.Query(DataSourceURL);
+    query.send(handleQueryResponse, scene);
+
+
+    function handleQueryResponse(response, scene) {
+          const GoogleData = response.getDataTable();
+          const rowNumber = GoogleData.getFilteredRows([{column: getColumnIndex(GoogleData, "title"), value: scene}])[0];
+          const info_tagline = GoogleData.getValue(rowNumber, getColumnIndex(GoogleData, "info_tagline"));
+
+    }
+    </script>
+
 	</head>
 	<body>
+
+<div class ="main-container">
+
+    <!-- intro to scene -->
+    <h1 class ="title">Kelp Forest</h1>
+    <div class = "intro-container">
+      <div class = "intro-left">
+        <a href="https://olympiccoast.noaa.gov/living/habitats/kelpforest/kelpforest.html" target="_blank">
+          <i class="fa fa-info-circle fa-lg" role="presentation" aria-label="info-circle icon"></i>
+        </a>
+        <a href="https://nmsolympiccoast.blob.core.windows.net/olympiccoast-prod/media/archive/library/pdfs/atlasmap.pdf" target="_blank">
+          <i class="fa fa-camera fa-lg" role="presentation" aria-label="camera icon"></i>
+        </a>
+      </div>
+      <div class ="intro-right">
+        Kelp forests at Olympic Coast are composed of two canopy-forming species: bull kelp and giant kelp, which together support many other species that find shelter and sustenance within this highly productive ecosystem. Understory kelp and algae interact continuously with fish, benthic invertebrates, and sea otters in a delicate balance that helps to maintain ecosystem stability and function. 
+      </div>
+
+    </div>
+
+    <h1 id="title1" class ="title"></h1>
+    <div class = "intro-container">
+      <div id="info-link" class = "intro-left">
+        <a href="https://olympiccoast.noaa.gov/living/habitats/kelpforest/kelpforest.html" target="_blank">
+          <i class="fa fa-info-circle fa-lg" role="presentation" aria-label="info-circle icon"></i>
+        </a>
+        <a href="https://nmsolympiccoast.blob.core.windows.net/olympiccoast-prod/media/archive/library/pdfs/atlasmap.pdf" target="_blank">
+          <i class="fa fa-camera fa-lg" role="presentation" aria-label="camera icon"></i>
+        </a>
+      </div>
+      <div id ="info_tagline" class ="intro-right"></div>
+
+    </div>
+
     <!-- define bootstrap layout that will contain the infographic -->
     <div class="container-fluid">
       <div class="row">
@@ -32,19 +129,20 @@
         </div>
       </div>
     </div>
+</div>
 
-  <!-- run infographiq function to link the svg with the svg_list -->
-  <script src='https://marinebon.org/infographiqJS/libs/infographiq_latest/infographiq.js'></script>  
-  <link rel="stylesheet" href="https://marinebon.org/infographiqJS/libs/infographiq_latest/infographiq.css"> 
   <script>
+
+    document.getElementById('title1').innerHTML = scene;
+
     link_svg({
-      svg: "illustrator_example.svg", 
-      csv: "icon_link.csv", 
+      svg: "kelp-forest.svg", 
+      csv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxTAZrLX0uK7N6fFUtXnK9ZEtbUpiF6OBjwFouChE7kJFp7_L0cXwdIwQj3C4j8GYlNQHs0jptr14I/pub?gid=1907591423&single=true&output=csv", 
       svg_id: "svg1", 
       toc_id: "toc1",
-      toc_style: "accordion",
+      toc_style: "list",
       text_toggle: "toggle_off",
-      svg_filter: "illustrator_example.svg"});
+      svg_filter: "kelp-forest"});
   </script>
 </body>
 </html>
