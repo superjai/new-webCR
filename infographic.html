@@ -64,13 +64,18 @@
     const scene = "Kelp Forest";
     document.title = scene;
 
+ 
 
+    var DataSourceURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxTAZrLX0uK7N6fFUtXnK9ZEtbUpiF6OBjwFouChE7kJFp7_L0cXwdIwQj3C4j8GYlNQHs0jptr14I/pub?gid=0&single=true&output=csv";
 
-    const DataSourceURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxTAZrLX0uK7N6fFUtXnK9ZEtbUpiF6OBjwFouChE7kJFp7_L0cXwdIwQj3C4j8GYlNQHs0jptr14I/pub?gid=0&single=true&output=csv";
+    var DataSourceURL1 = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?tq=where%20A%20%3D%20%22Kelp%20Forest%22";
+     google.charts.load('current', {packages: ['corechart']});
+   google.charts.setOnLoadCallback(function() {
+    
+  
+ var DataSourceURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxTAZrLX0uK7N6fFUtXnK9ZEtbUpiF6OBjwFouChE7kJFp7_L0cXwdIwQj3C4j8GYlNQHs0jptr14I/pub?gid=0&single=true&output=csv";
 
-    const DataSourceURL1 = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?tq=where%20A%20%3D%20%22Kelp%20Forest%22";
-
-    const query = new google.visualization.Query(DataSourceURL);
+    var query = new google.visualization.Query(DataSourceURL);
     query.send(handleQueryResponse, scene);
 
 
@@ -78,8 +83,11 @@
           const GoogleData = response.getDataTable();
           const rowNumber = GoogleData.getFilteredRows([{column: getColumnIndex(GoogleData, "title"), value: scene}])[0];
           const info_tagline = GoogleData.getValue(rowNumber, getColumnIndex(GoogleData, "info_tagline"));
+          console.log(info_tagline);
 
     }
+
+        });
     </script>
 
 	</head>
