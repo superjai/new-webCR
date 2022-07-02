@@ -67,72 +67,19 @@
       }
     </style>
 
-    <script>
-      //Enter scene here
-      const scene = "Kelp Forest";
-      document.title = scene;
-
-      const DataSourceURL = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?tq=where%20A%20%3D%20%22Kelp%20Forest%22";
-
-      google.charts.load('current', {packages: ['corechart']});
-      google.charts.setOnLoadCallback(function() {
-        const query = new google.visualization.Query(DataSourceURL);
-        query.send(handleSceneDataQueryResponse);
-      });
-
-      function handleSceneDataQueryResponse(response) {
-        const sceneData = response.getDataTable();
-
-        // Set tagline for Scene
-        document.getElementById('info_tagline').innerHTML = sceneData.getValue(0,2);
-        const infoIcon = sceneData.getValue(0,3);
-        const photoIcon = sceneData.getValue(0,4);
-        console.log(infoIcon);
-        if (infoIcon == null & photoIcon == null) {
-          document.getElementsByClassName("intro-left")[0].className = "intro-left-empty";
-          console.log("temp03");
-        } else {
-          if (infoIcon != null){
-            document.getElementById('info_icon').innerHTML = "scene";
-            console.log("temp05");
-          }
-
-        };
-
-        // Set tagline for 
-  //      sessionStorage.setItem('sceneData', sceneData);
-      }
-    </script>
-
 	</head>
 	<body>
 
 <div class ="main-container">
 
     <!-- intro to scene -->
-    <h1 class ="title">Kelp Forest</h1>
-    <div class = "intro-container">
-      <div class = "intro-left">
-        <a href="https://olympiccoast.noaa.gov/living/habitats/kelpforest/kelpforest.html" target="_blank">
-          <i class="fa fa-info-circle fa-lg" role="presentation" aria-label="info-circle icon"></i>
-        </a>
-        <a href="https://nmsolympiccoast.blob.core.windows.net/olympiccoast-prod/media/archive/library/pdfs/atlasmap.pdf" target="_blank">
-          <i class="fa fa-camera fa-lg" role="presentation" aria-label="camera icon"></i>
-        </a>
-      </div>
-      <div class ="intro-right">
-        Kelp forests at Olympic Coast are composed of two canopy-forming species: bull kelp and giant kelp, which together support many other species that find shelter and sustenance within this highly productive ecosystem. Understory kelp and algae interact continuously with fish, benthic invertebrates, and sea otters in a delicate balance that helps to maintain ecosystem stability and function. 
-      </div>
-
-    </div>
-
     <h1 id="title1" class ="title"></h1>
     <div class = "intro-container">
-      <span class = "intro-left">
+      <div class = "intro-left">
         <span id ="info_icon"></span>
         <span id ="photo_icon"></span>
-      </span>
-      <span id ="info_tagline" class ="intro-right"></span>
+      </div>
+      <div id ="info_tagline" class ="intro-right"></div>
 
     </div>
 
@@ -149,9 +96,77 @@
     </div>
 </div>
 
-  <script>
+
+    <script>
+      //Enter scene here
+      const scene = "Kelp Forest";
+      document.title = scene;
+      document.getElementById('title1').innerHTML = scene;
+      const sceneDataURL = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?tq=where%20A%20%3D%20%22Kelp%20Forest%22";
+
+      google.charts.load('current', {packages: ['corechart']});
+      google.charts.setOnLoadCallback(function() {
+        const query = new google.visualization.Query(sceneDataURL);
+        query.send(handleSceneDataQueryResponse);
+      });
+
+      const modalWindowURL = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?select%20A%2C%20B%2C%20C%2C%20D%2C%20E%2C%20F%2C%20G%2C%20H%20where%20A%20%3D%20%22kelp-forest%22"
+
+      google.charts.setOnLoadCallback(function() {
+        const query = new google.visualization.Query(modalWindowURL);
+        query.send(handleModalWindowQueryResponse);
+      });
+
+      function handleSceneDataQueryResponse(response) {
+        const sceneData = response.getDataTable();
+
+        // Set tagline for Scene
+        document.getElementById('info_tagline').innerHTML = sceneData.getValue(0,2);
+        sessionStorage.setItem('sceneSvg', sceneData.getValue(0,1));
+
+        const infoIcon = sceneData.getValue(0,3);
+        const photoIcon = sceneData.getValue(0,4);
+        if (infoIcon == null & photoIcon == null) {
+          document.getElementsByClassName("intro-left")[0].className = "intro-left-empty";
+        } else {
+          if (infoIcon != null){
+            let infoIconElement = document.createElement("i");
+            infoIconElement.setAttribute("class", "fa fa-info-circle fa-lg");
+            infoIconElement.setAttribute("role", "presentation");
+            infoIconElement.setAttribute("aria-label", "info-circle icon");            
+
+            let infoIconLink = document.createElement('a');
+            infoIconLink.setAttribute('href', infoIcon);
+            infoIconLink.setAttribute('target', "_blank");
+            infoIconLink.setAttribute('style', "padding-left:2px");
+            infoIconLink.append(infoIconElement);
+            document.getElementById('info_icon').append(infoIconLink);
+          }
+
+          if (photoIcon != null){
+            let photoIconElement = document.createElement("i");
+            photoIconElement.setAttribute("class", "fa fa-camera fa-lg");
+            photoIconElement.setAttribute("role", "presentation");
+            photoIconElement.setAttribute("aria-label", "camera icon");
+
+            let photoIconLink = document.createElement('a');
+            photoIconLink.setAttribute('href', photoIcon);
+            photoIconLink.setAttribute('target', "_blank");
+            photoIconLink.append(photoIconElement);
+            document.getElementById('photo_icon').append(photoIconLink);
+          }
+        };
+      }
+
+      function handleModalWindowQueryResponse(response) {
+        const sceneModalWindowData = response.getDataTable();
+        sessionStorage.setItem('modalWindows', sceneModalWindowData);
+        console.log(sceneModalWindowData.getValue(1,3));
+        var tempo5 = sessionStorage.getItem('modalWindows');
+        console.log(JSON.stringify(tempo5));
+      }
 //var tempo3 = sessionStorage.getItem('sceneData');
-    document.getElementById('title1').innerHTML = scene;
+
 
     link_svg({
       svg: "kelp-forest.svg", 
