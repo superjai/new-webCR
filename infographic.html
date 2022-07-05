@@ -66,91 +66,6 @@
         padding-right: 15px; 
       }
 
-      /* Styles for table-based infographics */
-
-      /* Set a style for all buttons */
-      button {
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-      }
-
-      button:hover {
-        opacity: 0.8;
-      }
-
-      /* Extra styles for the cancel button */
-      .closebtn {
-        width: auto;
-        padding: 5px 5px;
-        position: absolute;
-        right: 10px;
-        bottom: 0px;
-        background-color: LightGray;
-        color: Black;
-      }
-
-      .container {
-        padding: 16px;
-        position: relative;
-      }
-
-      span.psw {
-        float: right;
-        padding-top: 16px;
-      }
-
-      /* The Modal (background) */
-      .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        padding-top: 60px;
-      }
-
-      /* Modal Content/Box */
-      .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-        border: 1px solid #888;
-        width: 60%; /* Could be more or less, depending on screen size */
-      }
-
-      /* Add Zoom Animation */
-      .animate {
-        -webkit-animation: animatezoom 0.6s;
-        animation: animatezoom 0.6s
-      }
-
-      @-webkit-keyframes animatezoom {
-        from {-webkit-transform: scale(0)} 
-        to {-webkit-transform: scale(1)}
-      }
-        
-      @keyframes animatezoom {
-        from {transform: scale(0)} 
-        to {transform: scale(1)}
-      }
-
-      /* Change styles for span and cancel button on extra small screens */
-      @media screen and (max-width: 300px) {
-        span.psw {
-           display: block;
-           float: none;
-        }
-        .cancelbtn {
-           width: 100%;
-        }
-      }
     </style>
 
 	</head>
@@ -180,22 +95,38 @@
         </div>
       </div>
     </div>
-</div>
+  </div>
 
-    <div id="modal1" class="modal" >
-      <div class="modal-content animate" >
-        <div class = "container">
-          <h3 style = "text-align: center;"><span id="title"></span></h3>
-          <div id="img_target" ></div>
-          <span id="caption"></span>
-          <span id="datalink"></span>
-          <span id="methodslink"></span>
+<div class="container">
+  <h2>Modal Example</h2>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ModalBox">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="ModalBox" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
         </div>
-        <div class="container" >
-          <button type="button"  onclick="document.getElementById('modal1').style.display='none'" class="closebtn">CLOSE</button>
+        <div id ="modal-body" class="modal-body">
+          <p>tempo</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
+      
     </div>
+  </div>
+  
+</div>
+
+
+  </div>
 
     <script>
       //Enter scene here

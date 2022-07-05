@@ -331,23 +331,8 @@ function icon_append(d, h, modal_url_pfx, svg_id, hover_color, section_content, 
     if (d.not_modal == 'T'){
       window.location = d.link;
     } else {
-        document.getElementById('modal1').style.display='block';
-      // https://www.drupal.org/node/756722#using-jquery
-    //  (function ($) {
-    //    $('#modal').find('iframe')
-    //      .prop('src', function(){ return d.link });
-
-//        $('#modal' + '-title').html( d.title );
-
-  //      $('#modal').on('show.bs.modal', function () {
-  //        $('.modal-content').css('height',$( window ).height()*0.9);
-  //        $('.modal-body').css('height','calc(100% - 65px - 55.33px)');
-  //      });
-
-  //      $('#modal').modal();
-  //    }(jQuery));
-
-
+      document.getElementById("modal-body").innerHTML = d.link;
+      $("#ModalBox").modal();
     }
   }
 
