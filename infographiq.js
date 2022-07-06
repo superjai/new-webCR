@@ -331,6 +331,18 @@ function icon_append(d, h, modal_url_pfx, svg_id, hover_color, section_content, 
     if (d.not_modal == 'T'){
       window.location = d.link;
     } else {
+      const modalData = sessionStorage.getItem('modalWindows');
+
+        let modalWindow = new google.visualization.DataTable(modalData);
+        let modalView = new google.visualization.DataView(modalWindow);
+      //  modalView.setRows(modalView.getFilteredRows([{column: 2, value: d.link}]));
+     // let tempo3 = modalWindow.getFilteredRows([{column: 2, value: d.link}]);
+    //  let modalWindowSubset = new google.visualization.DataView(modalWindow);
+    //  modalWindowSubset.setRows(modalWindowSubset.getFilteredRows([{column: 2, value: d.link}]));
+          console.log(modalWindow);
+          console.log(d.link);
+          console.log(modalView.getValue(4,2));
+           // console.log(modalView.getFilteredRows({column: 2, value: d.link}));
       document.getElementById("modal-body").innerHTML = d.link;
       $("#ModalBox").modal();
     }
