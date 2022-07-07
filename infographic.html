@@ -75,7 +75,7 @@
       <!-- intro to scene -->
       <h1 id="title1" class ="title"></h1>
       <div class = "intro-container">
-        <div class = "intro-left">
+        <div id = "container-intro-left" class = "intro-left">
           <span id ="info_icon"></span>
           <span id ="photo_icon"></span>
         </div>
@@ -105,6 +105,15 @@
             <h4 id="modal-title" class="modal-title">Modal Header</h4>
           </div>
           <div id ="modal-body" class="modal-body">
+            <div class = "intro-container">
+              <div id = "modal_intro_left" class = "intro-left">
+                <span id ="modal_info_icon"></span>
+                <span id ="modal_photo_icon"></span>
+              </div>
+              <div id ="modal_info_tagline" class ="intro-right"></div>
+            </div>
+
+
             <p>tempo</p>
           </div>
           <div class="modal-footer">
@@ -129,7 +138,7 @@
         query.send(handleSceneDataQueryResponse);
       });
 
-      const modalWindowURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQxTAZrLX0uK7N6fFUtXnK9ZEtbUpiF6OBjwFouChE7kJFp7_L0cXwdIwQj3C4j8GYlNQHs0jptr14I/pubhtml?gid=1907591423&single=true"
+      const modalWindowURL = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?gid=1907591423&tq=select%20A%2C%20B%2C%20C%2C%20D%2C%20E%2C%20F%2C%20G%2C%20H%20where%20A%20%3D%20%22kelp-forest%22"
 
       google.charts.setOnLoadCallback(function() {
         const query = new google.visualization.Query(modalWindowURL);
@@ -142,39 +151,9 @@
         // Set tagline for Scene
         document.getElementById('info_tagline').innerHTML = sceneData.getValue(0,2);
         sessionStorage.setItem('sceneSvg', sceneData.getValue(0,1));
-
         const infoIcon = sceneData.getValue(0,3);
         const photoIcon = sceneData.getValue(0,4);
-        if (infoIcon == null & photoIcon == null) {
-          document.getElementsByClassName("intro-left")[0].className = "intro-left-empty";
-        } else {
-          if (infoIcon != null){
-            let infoIconElement = document.createElement("i");
-            infoIconElement.setAttribute("class", "fa fa-info-circle fa-lg");
-            infoIconElement.setAttribute("role", "presentation");
-            infoIconElement.setAttribute("aria-label", "info-circle icon");            
-
-            let infoIconLink = document.createElement('a');
-            infoIconLink.setAttribute('href', infoIcon);
-            infoIconLink.setAttribute('target', "_blank");
-            infoIconLink.setAttribute('style', "padding-left:2px");
-            infoIconLink.append(infoIconElement);
-            document.getElementById('info_icon').append(infoIconLink);
-          }
-
-          if (photoIcon != null){
-            let photoIconElement = document.createElement("i");
-            photoIconElement.setAttribute("class", "fa fa-camera fa-lg");
-            photoIconElement.setAttribute("role", "presentation");
-            photoIconElement.setAttribute("aria-label", "camera icon");
-
-            let photoIconLink = document.createElement('a');
-            photoIconLink.setAttribute('href', photoIcon);
-            photoIconLink.setAttribute('target', "_blank");
-            photoIconLink.append(photoIconElement);
-            document.getElementById('photo_icon').append(photoIconLink);
-          }
-        };
+  //      add_intro_icons(infoIcon, photoIcon, document.getElementById("container-intro-left"), document.getElementById('info_icon'), document.getElementById('photo_icon'));
       }
 
       function handleModalWindowQueryResponse(response) {

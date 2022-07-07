@@ -335,16 +335,17 @@ function icon_append(d, h, modal_url_pfx, svg_id, hover_color, section_content, 
 
         let modalWindow = new google.visualization.DataTable(modalData);
         let modalView = new google.visualization.DataView(modalWindow);
-      //  modalView.setRows(modalView.getFilteredRows([{column: 2, value: d.link}]));
-     // let tempo3 = modalWindow.getFilteredRows([{column: 2, value: d.link}]);
-    //  let modalWindowSubset = new google.visualization.DataView(modalWindow);
-    //  modalWindowSubset.setRows(modalWindowSubset.getFilteredRows([{column: 2, value: d.link}]));
-          console.log(modalWindow);
-          console.log(d.link);
-          console.log(modalView.getValue(4,2));
-           // console.log(modalView.getFilteredRows({column: 2, value: d.link}));
-      document.getElementById("modal-body").innerHTML = d.link;
+        modalView.setRows(modalView.getFilteredRows([{column: 2, value: d.link}]));
+
+        $('h4#modal-title').text(modalView.getValue(0,4));
+    //    let infoIcon = modalView.getValue(0,5);
+    //    let photoIcon = modalView.getValue(0,6);
+
+  //    let modalTitle = document.getElementById("modal-body");
+  //    let text0 = document.createTextNode(modalView.getValue(0,4));
+  //    modalTitle.appendChild(text0);
       $("#ModalBox").modal();
+
     }
   }
 
@@ -403,6 +404,40 @@ function icon_append(d, h, modal_url_pfx, svg_id, hover_color, section_content, 
   }
   return section_content;
 }
+
+function add_intro_icons(infoIcon, photoIcon, containerLeft, containerInfo, containerPhoto){
+        if (infoIcon == null & photoIcon == null) {
+          containerLeft.className = "intro-left-empty";
+        } else {
+          if (infoIcon != null){
+            let infoIconElement = document.createElement("i");
+            infoIconElement.setAttribute("class", "fa fa-info-circle fa-lg");
+            infoIconElement.setAttribute("role", "presentation");
+            infoIconElement.setAttribute("aria-label", "info-circle icon");            
+
+            let infoIconLink = document.createElement('a');
+            infoIconLink.setAttribute('href', infoIcon);
+            infoIconLink.setAttribute('target', "_blank");
+            infoIconLink.setAttribute('style', "padding-left:2px");
+            infoIconLink.append(infoIconElement);
+            containerInfo.append(infoIconLink);
+          }
+
+          if (photoIcon != null){
+            let photoIconElement = document.createElement("i");
+            photoIconElement.setAttribute("class", "fa fa-camera fa-lg");
+            photoIconElement.setAttribute("role", "presentation");
+            photoIconElement.setAttribute("aria-label", "camera icon");
+
+            let photoIconLink = document.createElement('a');
+            photoIconLink.setAttribute('href', photoIcon);
+            photoIconLink.setAttribute('target', "_blank");
+            photoIconLink.append(photoIconElement);
+            containerPhoto.append(photoIconLink);
+          }
+        };
+}
+
 
 // main function to link table elements to modal popups. 
 // The only argument taken is 'csvLink' which is a link to a csv file with the following columns:
