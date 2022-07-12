@@ -333,17 +333,108 @@ function icon_append(d, h, modal_url_pfx, svg_id, hover_color, section_content, 
     } else {
       const modalData = sessionStorage.getItem('modalWindows');
 
-        let modalWindow = new google.visualization.DataTable(modalData);
-        let modalView = new google.visualization.DataView(modalWindow);
-        modalView.setRows(modalView.getFilteredRows([{column: 2, value: d.link}]));
+      let modalWindow = new google.visualization.DataTable(modalData);
+      let modalView = new google.visualization.DataView(modalWindow);
+      modalView.setRows(modalView.getFilteredRows([{column: 2, value: d.link}]));
 
-        $('h4#modal-title').text(modalView.getValue(0,4));
-    //    let infoIcon = modalView.getValue(0,5);
-    //    let photoIcon = modalView.getValue(0,6);
+      $('h4#modal-title').text(modalView.getValue(0,4));
+      let infoIcon = modalView.getValue(0,5);
+      let photoIcon = modalView.getValue(0,6);
 
-  //    let modalTitle = document.getElementById("modal-body");
-  //    let text0 = document.createTextNode(modalView.getValue(0,4));
-  //    modalTitle.appendChild(text0);
+      document.getElementById('modal_info_tagline').innerHTML = modalView.getValue(0,7);
+
+      add_intro_icons(infoIcon, photoIcon, document.getElementById("modal_intro_left"), 
+        document.getElementById('modal_info_icon'), document.getElementById('modal_photo_icon'));
+
+      const modalTabsData = sessionStorage.getItem('modalTabs');
+
+      let modalTabs = new google.visualization.DataTable(modalTabsData);
+      let modalTabsView = new google.visualization.DataView(modalTabs);
+      modalTabsView.setRows(modalTabsView.getFilteredRows([{column: 0, value: d.link}]));
+      
+      const numberTabs =  modalTabsView.getNumberOfRows();
+
+      if (numberTabs == 0){
+        console.error("Error! No entries in Google sheet 'modal_tabs' for " + d.link);
+      }
+      else { // 1 or more tabs
+
+        let modalTabsContainer = document.getElementById('modal-tabs');
+        while (modalTabsContainer.firstChild) {
+          modalTabsContainer.removeChild(modalTabsContainer.firstChild);
+        }
+        let modalUL = document.createElement('ul');
+        modalUL.setAttribute('class', 'nav nav-tabs');
+        modalUL.setAttribute('role', 'tablist');
+        modalUL.setAttribute('id', 'modalUL');
+        modalTabsContainer.append(modalUL);
+
+        let tabsTitleHref = [];
+
+        for (let i = 0; i < numberTabs; i++) {
+          let modalLI = document.createElement('li');
+          if (i==0) {
+            modalLI.setAttribute('class', 'active');
+          }
+          
+          modalLI.setAttribute('role', 'presentation');
+      
+          let modalA  = document.createElement('a');
+
+          modalA.setAttribute('role', 'tab');
+          modalA.setAttribute('data-toggle', 'tab');
+          let tabsTitle = modalTabsView.getValue(i,2);
+          tabsTitleHref.push(tabsTitle.replace(/[^A-Z0-9]/ig, "-").toLowerCase());
+          modalA.setAttribute('href', "#" + tabsTitleHref[i]);
+          modalA.setAttribute('aria-controls', tabsTitleHref[i]);
+          modalA.innerHTML = modalTabsView.getValue(i,2);
+          modalLI.append(modalA);
+
+          document.getElementById('modalUL').append(modalLI);
+        }
+
+        let modalContentDiv = document.createElement('div');
+        modalContentDiv.setAttribute('class', 'tab-content');
+
+        for (let i = 0; i < numberTabs; i++){
+          let modalContentPanel = document.createElement("div");
+          modalContentPanel.setAttribute('id', tabsTitleHref[i]);
+          modalContentPanel.setAttribute('aria-labelledby', tabsTitleHref[i]);
+          modalContentPanel.setAttribute('role', "tabpanel");
+          if (i==0){
+            modalContentPanel.setAttribute('class', "section level4 tab-pane tabbed-pane active");
+          } else {
+            modalContentPanel.setAttribute('class', "section level4 tab-pane tabbed-pane");
+          }
+
+          let monitoringTitle = modalTabsView.getValue(i,6);
+          let monitoringLink = modalTabsView.getValue(i,7);
+          let dataTitle = modalTabsView.getValue(i,8);
+          let dataLink = modalTabsView.getValue(i,9);
+
+          if (!(monitoringLink == null & dataLink == null)) {
+            let grayBar = document.createElement("div");
+            grayBar.setAttribute('class', 'gray-bar');
+            let grayBarRow = document.createElement("div");
+            grayBarRow.setAttribute('class', 'gray-bar-row');
+            grayBar.append(grayBarRow);
+            if (monitoringLink != null) {
+              grayBarInfo("left", monitoringLink, monitoringTitle, grayBarRow)
+            }
+            if (dataLink != null) {
+              grayBarInfo("right", dataLink, dataTitle, grayBarRow)
+            }
+
+            grayBar.append(grayBarRow);
+            modalContentPanel.append(grayBar)
+          }
+
+
+          modalContentDiv.append(modalContentPanel);
+          modalTabsContainer.append(modalContentDiv);
+        }
+      }
+
       $("#ModalBox").modal();
 
     }
@@ -406,6 +497,15 @@ function icon_append(d, h, modal_url_pfx, svg_id, hover_color, section_content, 
 }
 
 function add_intro_icons(infoIcon, photoIcon, containerLeft, containerInfo, containerPhoto){
+
+        while (containerInfo.firstChild) {
+          containerInfo.removeChild(containerInfo.firstChild);
+        }
+
+        while (containerPhoto.firstChild) {
+          containerPhoto.removeChild(containerPhoto.firstChild);
+        }
+
         if (infoIcon == null & photoIcon == null) {
           containerLeft.className = "intro-left-empty";
         } else {
@@ -436,6 +536,33 @@ function add_intro_icons(infoIcon, photoIcon, containerLeft, containerInfo, cont
             containerPhoto.append(photoIconLink);
           }
         };
+}
+
+function grayBarInfo(cell, grayLink, grayTitle, grayBarRow){
+              grayLink = grayLink.trim();
+              let grayCell = document.createElement("div");
+              if (cell == "left"){
+                grayCell.setAttribute('class', 'gray-bar-left');
+              } else {
+                grayCell.setAttribute('class', 'gray-bar-right');
+              }
+              let grayCellA = document.createElement("a");
+              let TitleFinal = grayTitle ? grayTitle : grayLink;
+              grayCellA.setAttribute('href', grayLink);
+              grayCellA.setAttribute('target', "_blank");
+              let grayCellI = document.createElement("i");
+              grayCellI.setAttribute('role', "presentation");
+              if (cell == "left"){
+                grayCellI.setAttribute('class', "fa fa-clipboard-list");
+                grayCellI.setAttribute('aria-label', "clipboard-list icon");
+              } else {
+                grayCellI.setAttribute('class', "fa fa-database");
+                grayCellI.setAttribute('aria-label', "database icon");
+              }
+              grayCellA.append(grayCellI);
+              grayCellA.append(document.createTextNode(" " + TitleFinal));
+              grayCell.append(grayCellA);
+              grayBarRow.append(grayCell);
 }
 
 

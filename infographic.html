@@ -22,9 +22,7 @@
   <link rel="stylesheet" href="https://marinebon.org/infographiqJS/libs/infographiq_latest/infographiq.css"> 
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" >
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" 
-      integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" 
-      crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <style>
       .main-container {
@@ -66,6 +64,29 @@
         padding-right: 15px; 
       }
 
+      .gray-bar {
+        background:LightGrey; 
+        width:100%; 
+        display:table; 
+        font-size:120%; 
+        padding: 10px; 
+        margin-bottom: 10px;
+      }
+
+      .gray-bar-row {
+        display:table-row;
+      }
+
+      .gray-bar-left {
+        text-align:left; 
+        display:table-cell;
+      }
+
+      .gray-bar-right {
+        text-align:right; 
+        display:table-cell;
+      }
+
     </style>
 
 	</head>
@@ -97,7 +118,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="ModalBox" role="dialog">
-      <div class="modal-dialog">
+      <div class="modal-lg modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
@@ -114,7 +135,8 @@
             </div>
 
 
-            <p>tempo</p>
+
+            <div id ="modal-tabs"></div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -132,17 +154,25 @@
       document.getElementById('title1').innerHTML = scene;
       const sceneDataURL = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?tq=where%20A%20%3D%20%22Kelp%20Forest%22";
 
+      const modalWindowURL = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?gid=1907591423&tq=select%20A%2C%20B%2C%20C%2C%20D%2C%20E%2C%20F%2C%20G%2C%20H%20where%20A%20%3D%20%22kelp-forest%22"
+
+      const modalTabURL = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?gid=910221780&tq=select%20A%2CB%2CC%2CD%2CE%2CF%2CG%2CH%2CI%2CJ%20where%20A%20starts%20with%20%22kelp-forest%22"
+
       google.charts.load('current', {packages: ['corechart']});
+
       google.charts.setOnLoadCallback(function() {
         const query = new google.visualization.Query(sceneDataURL);
         query.send(handleSceneDataQueryResponse);
       });
 
-      const modalWindowURL = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?gid=1907591423&tq=select%20A%2C%20B%2C%20C%2C%20D%2C%20E%2C%20F%2C%20G%2C%20H%20where%20A%20%3D%20%22kelp-forest%22"
-
       google.charts.setOnLoadCallback(function() {
         const query = new google.visualization.Query(modalWindowURL);
         query.send(handleModalWindowQueryResponse);
+      });
+
+      google.charts.setOnLoadCallback(function() {
+        const query = new google.visualization.Query(modalTabURL);
+        query.send(handleModalTabQueryResponse);
       });
 
       function handleSceneDataQueryResponse(response) {
@@ -153,21 +183,18 @@
         sessionStorage.setItem('sceneSvg', sceneData.getValue(0,1));
         const infoIcon = sceneData.getValue(0,3);
         const photoIcon = sceneData.getValue(0,4);
-  //      add_intro_icons(infoIcon, photoIcon, document.getElementById("container-intro-left"), document.getElementById('info_icon'), document.getElementById('photo_icon'));
+        add_intro_icons(infoIcon, photoIcon, document.getElementById("container-intro-left"), document.getElementById('info_icon'), document.getElementById('photo_icon'));
       }
 
       function handleModalWindowQueryResponse(response) {
         const sceneModalWindowData = response.getDataTable();
         sessionStorage.setItem('modalWindows', sceneModalWindowData.toJSON());
-
-       // var tempo5 = sessionStorage.getItem('modalWindows');
-       // console.log(sceneModalWindowData.getValue(2,2));
-
-        // var myView = new google.visualization.DataTable(tempo5);
-        // console.log(myView.getValue(2,2));
-
       }
 
+      function handleModalTabQueryResponse(response) {
+        const sceneModalTabData = response.getDataTable();
+        sessionStorage.setItem('modalTabs', sceneModalTabData.toJSON());
+      }
 
     link_svg({
       svg: "kelp-forest.svg", 
