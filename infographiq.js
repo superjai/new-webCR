@@ -429,8 +429,33 @@ function icon_append(d, h, modal_url_pfx, svg_id, hover_color, section_content, 
             modalContentPanel.append(grayBar)
           }
 
+          let isInteractive = modalTabsView.getValue(i,3);
+          let imageLink = modalTabsView.getValue(i,4);
+          let caption = modalTabsView.getValue(i,5);
+
+          if (isInteractive == "Not interactive"){
+            let modalInfo = document.createElement("div");
+            let modalCaption = document.createElement("div");
+            modalCaption.innerHTML = marked.parse(caption);
+
+            if (imageLink != null){
+              imageLink = imageLink.slice(32); // trim off initial piece of link
+              imageLink = imageLink.slice(0,imageLink.search("/")); // get middle section of link that we want
+              imageLink = "https://drive.google.com/uc?export=view&id=" + imageLink;
+              let modalImage = document.createElement("img");
+              modalImage.setAttribute("class", "img-responsive");
+              modalImage.setAttribute("src", imageLink);
+              modalInfo.append(modalImage)
+            } else {
+               modalCaption.setAttribute("class", "caption-no-image");
+            }
+            modalInfo.append(modalCaption);
+            modalContentPanel.append(modalInfo);
+          }
 
           modalContentDiv.append(modalContentPanel);
+
+
           modalTabsContainer.append(modalContentDiv);
         }
       }
