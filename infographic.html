@@ -18,88 +18,19 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <!-- run infographiq function to link the svg with the svg_list -->
-  <script src='infographiq.js'></script>  
-  <link rel="stylesheet" href="https://marinebon.org/infographiqJS/libs/infographiq_latest/infographiq.css"> 
+    <!-- run infographiq function to link the svg with the svg_list -->
+    <script src='infographiq.js'></script>  
+    <link href="infographiq.css" rel="stylesheet" type="text/css" > 
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-    <style>
-      .main-container {
-        max-width: 940px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .intro-container {
-        display: flex;
-      }
-
-      .intro-left {
-        margin-top: 10px;
-        margin-bottom: 10px; 
-        margin-right: 10px; 
-        padding-left: 15px;
-        padding-right: 15px; 
-        flex: 1.5;
-      }
-
-      .intro-left-empty {
-        margin-top: 10px;
-        margin-bottom: 10px;
-        margin-right: 10px;
-        padding: 0px;
-        flex: 0;
-      }
-
-      .intro-right {
-        margin: 10px; 
-        font-style: italic; 
-        flex: 20;
-      }
-
-      h1.title {
-        font-size: 38px;
-        padding-left: 15px;
-        padding-right: 15px; 
-      }
-
-      .gray-bar {
-        background:LightGrey; 
-        width:100%; 
-        display:table; 
-        font-size:120%; 
-        padding: 10px; 
-        margin-bottom: 10px;
-      }
-
-      .gray-bar-row {
-        display:table-row;
-      }
-
-      .gray-bar-left {
-        text-align:left; 
-        display:table-cell;
-      }
-
-      .gray-bar-right {
-        text-align:right; 
-        display:table-cell;
-      }
-
-      .caption-no-image {
-        padding-top: 10px;
-      }
-
-    </style>
 
 	</head>
 	<body>
 
     <div class ="main-container">
       <!-- intro to scene -->
-      <h1 id="title1" class ="title"></h1>
+      <h1 id="title" class ="title"></h1>
       <div class = "intro-container">
         <div id = "container-intro-left" class = "intro-left">
           <span id ="info_icon"></span>
@@ -121,7 +52,7 @@
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Window -->
     <div class="modal fade" id="ModalBox" role="dialog">
       <div class="modal-lg modal-dialog">
         <!-- Modal content-->
@@ -138,9 +69,6 @@
               </div>
               <div id ="modal_info_tagline" class ="intro-right"></div>
             </div>
-
-
-
             <div id ="modal-tabs"></div>
           </div>
           <div class="modal-footer">
@@ -149,14 +77,13 @@
         </div>
       </div>
     </div>
-
   </div>
 
     <script>
       //Enter scene here
       const scene = "Kelp Forest";
       document.title = scene;
-      document.getElementById('title1').innerHTML = scene;
+      document.getElementById('title').innerHTML = scene;
       const sceneDataURL = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?tq=where%20A%20%3D%20%22Kelp%20Forest%22";
 
       const modalWindowURL = "https://docs.google.com/spreadsheets/d/1sP_LiLPdWGRrcwq6J1UWUpovPRD7zmy4_g1FrEW2B-k/gviz/tq?gid=1907591423&tq=select%20A%2C%20B%2C%20C%2C%20D%2C%20E%2C%20F%2C%20G%2C%20H%20where%20A%20%3D%20%22kelp-forest%22"
